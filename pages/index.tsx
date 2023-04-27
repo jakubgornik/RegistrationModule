@@ -1,82 +1,115 @@
 import {
   Button,
   Typography,
-  styled,
   TextField,
   Box,
   Autocomplete,
   useTheme,
   useMediaQuery,
+  Container,
 } from "@mui/material";
-import { bgcolor } from "@mui/system";
-import { useState } from "react";
+
+const sxContainer = {
+  backgroundColor: "#F7F7F7",
+  height: "85vh",
+  maxWidth: { xs: "70vw", sm: "75vw", xl: "80vw" },
+  mx: "auto",
+  padding: "0 !important",
+  border: "0.5px #222222 solid",
+  borderRadius: "11px 11px 0px 0px",
+};
+
+const sxHeader = {
+  display: "flex",
+  "justify-content": "center",
+  "align-items": "center",
+  height: ["4.5rem", "4rem"],
+  backgroundColor: "#333333",
+  borderRadius: "9px 9px 0px 0px",
+};
+
+const sxFormTitle = {
+  maxWidth: { xs: "50vw", sm: "75vw", xl: "80vw" },
+  textAlign: "center",
+  color: "#FFFFFF",
+};
+
+const sxInnerBox = {
+  display: "flex",
+  "flex-direction": "column",
+  "flex-wrap": "wrap",
+  maxWidth: "80%",
+  mx: "auto",
+  pt: 4,
+};
+
+const sxInputs = {
+  mb: 2,
+  "& .MuiFilledInput-root:after": {
+    borderBottom: "2px solid #777777",
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "#777777",
+  },
+};
 
 export default function Home() {
-  const [inputData, setInputData] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-    input4: "",
-    input5: "",
-    autocomplete: null,
-  });
-
-  const Container = styled(Box)({
-    // height: "70vh",
-    // width: "70vw",
-    // backgroundColor: "#F7F7F7",
-    // margin: "60px auto",
-    // border: "solid 1px black",
-    // borderRadius: "10px",
-  });
-
-  const Header = styled(Box)({
-    // height: "3rem",
-    // backgroundColor: "#222222",
-    // borderRadius: "9px 9px 0px 0px",
-  });
-
-  const InnerBox = styled(Box)({
-    // display: "flex",
-    // "flex-wrap": "wrap",
-    // "max-width": "1280px",
-    // margin: "0 auto",
-    // "justify-content": "center",
-  });
-
-  const Input = styled(TextField)({
-    // margin: "8px",
-    // flex: "1 0 300px",
-    // "max-width": "100%",
-  });
-
   return (
-    <Container
-      sx={{
-        backgroundColor: "tomato",
-        height: "100vh",
-        maxWidth: { xs: "10vw", sm: "20vw" },
-        mx: "auto",
-      }}
-    >
-      <Typography></Typography>
-      <Header>
-        <Typography variant="h5" component="h2" mx={2} color={["white", "red"]}>
+    <Container sx={sxContainer}>
+      <Box sx={sxHeader}>
+        <Typography variant="h5" component="h2" sx={sxFormTitle}>
           Please enter your data
         </Typography>
-      </Header>
-      <InnerBox>
-        <Input name="input1" label="Input 1" />
-        <Input name="input2" label="Input 2" />
-        <Input name="input3" label="Input 3" />
-        <Input name="input4" label="Input 4" />
-        <Input name="input5" label="Input 5" type="number" required />
-        <Autocomplete
-          sx={{ maxWidth: "50%" }}
-          options={["Option 1", "Option 2", "Option 3"]}
-          renderInput={(params) => <Input {...params} label="Autocomplete" />}
+      </Box>
+      <Box sx={sxInnerBox}>
+        <TextField
+          variant="filled"
+          name="password-input"
+          label="Hasło"
+          sx={sxInputs}
+          required
         />
-      </InnerBox>
+        <TextField
+          variant="filled"
+          name="repeatPassword-input"
+          label="Powtórz Hasło"
+          sx={sxInputs}
+          required
+        />
+        <TextField
+          variant="filled"
+          name="nip-input"
+          label="NIP"
+          sx={sxInputs}
+          required
+        />
+        <TextField
+          variant="filled"
+          name="email-input"
+          label="Email"
+          type="email"
+          sx={sxInputs}
+          required
+        />
+        <Autocomplete
+          sx={sxInputs}
+          options={["Option 1", "Option 2", "Option 3"]}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              required
+              label="Stanowisko"
+            />
+          )}
+        />
+        <TextField
+          variant="filled"
+          name="phone-input"
+          label="Telefon"
+          sx={sxInputs}
+        />
+      </Box>
     </Container>
   );
 }
