@@ -107,42 +107,70 @@ export default function Home() {
     }
   };
 
-  const validatePassword = () => {};
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted with values:", formData.password);
-
+  const validatePassword = async () => {
     const isPasswordValid = await passwordValidationSchema.isValid({
       password: formData.password,
     });
+    setValidationData((prevData) => ({
+      ...prevData,
+      passwordValidation: isPasswordValid,
+    }));
+  };
+
+  const validateRepeatedPassword = async () => {
     let isRepeatedPasswordValid: boolean;
     formData.password === formData.repeatedPassword
       ? (isRepeatedPasswordValid = true)
       : (isRepeatedPasswordValid = false);
+    setValidationData((prevData) => ({
+      ...prevData,
+      repeatedPasswordValiadtion: isRepeatedPasswordValid,
+    }));
+  };
 
-    const isNipValid = await nipValidationSchema.isValid({
-      nip: formData.nip,
-    });
+  const validateEmail = async () => {
     const isEmailValid = await emailValidationSchema.isValid({
       email: formData.email,
     });
+    setValidationData((prevData) => ({
+      ...prevData,
+      emailValidation: isEmailValid,
+    }));
+  };
+
+  const validateNip = async () => {
+    const isNipValid = await nipValidationSchema.isValid({
+      nip: formData.nip,
+    });
+    setValidationData((prevData) => ({
+      ...prevData,
+      nipValidation: isNipValid,
+    }));
+  };
+
+  const validatePosition = async () => {
     const isPositionValid = await positionValidationSchema.isValid({
       position: formData.position,
     });
+    setValidationData((prevData) => ({
+      ...prevData,
+      positionValidation: isPositionValid,
+    }));
+  };
+
+  const validatePhone = async () => {
     const isPhoneValid = await phoneValidationSchema.isValid({
       phone: formData.phone,
     });
-
     setValidationData((prevData) => ({
       ...prevData,
-      passwordValidation: isPasswordValid,
-      repeatedPasswordValiadtion: isRepeatedPasswordValid,
-      nipValidation: isNipValid,
-      emailValidation: isEmailValid,
-      positionValidation: isPositionValid,
       phoneValidation: isPhoneValid,
     }));
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form submitted with values:", formData);
 
     // przekazanie formData do context? zeby byl globalny
   };
@@ -165,6 +193,10 @@ export default function Home() {
             label="Hasło"
             required
             error={!validationData.passwordValidation}
+            helperText={
+              !validationData.passwordValidation ? "Nieprawidłowe dane" : ""
+            }
+            onBlur={validatePassword}
           />
           <TextField
             sx={sxInputs}
@@ -175,6 +207,12 @@ export default function Home() {
             type="password"
             required
             error={!validationData.repeatedPasswordValiadtion}
+            helperText={
+              !validationData.repeatedPasswordValiadtion
+                ? "Nieprawidłowe dane"
+                : ""
+            }
+            onBlur={validateRepeatedPassword}
           />
           <TextField
             sx={sxInputs}
@@ -185,6 +223,10 @@ export default function Home() {
             type="number"
             required
             error={!validationData.nipValidation}
+            helperText={
+              !validationData.nipValidation ? "Nieprawidłowe dane" : ""
+            }
+            onBlur={validateNip}
           />
           <TextField
             sx={sxInputs}
@@ -195,6 +237,10 @@ export default function Home() {
             type="email"
             required
             error={!validationData.emailValidation}
+            helperText={
+              !validationData.emailValidation ? "Nieprawidłowe dane" : ""
+            }
+            onBlur={validateEmail}
           />
           <Autocomplete
             sx={sxInputs}
@@ -208,6 +254,10 @@ export default function Home() {
                 label="Stanowisko"
                 required
                 error={!validationData.positionValidation}
+                helperText={
+                  !validationData.positionValidation ? "Nieprawidłowe dane" : ""
+                }
+                onBlur={validatePosition}
               />
             )}
           />
@@ -219,6 +269,10 @@ export default function Home() {
             label="Telefon"
             type="tel"
             error={!validationData.phoneValidation}
+            helperText={
+              !validationData.phoneValidation ? "Nieprawidłowe dane" : ""
+            }
+            onBlur={validatePhone}
           />
           <Button
             variant="contained"
