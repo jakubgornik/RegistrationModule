@@ -11,7 +11,7 @@ import {
 import {
   sxContainer,
   sxHeader,
-  sxSubmitButton,
+  sxSubmitButtonProcess,
   sxFormTitle,
   sxInnerBox,
   sxInputs,
@@ -20,6 +20,14 @@ import {
 import { headerTitle, registrationButtonText } from "../utils/textData";
 
 import { useState } from "react";
+
+import * as Yup from "yup";
+
+const passwordValidationSchema = Yup.object().shape({
+  password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long"),
+});
 
 const position: string[] = [
   "Administrator",
@@ -49,6 +57,17 @@ export default function Home() {
     phone: "",
   });
 
+  const [validationData, setValidationData] = useState({
+    passwordValidation: true,
+    repeatedPasswordValiadtion: true,
+    nipValidation: true,
+    emailValidation: true,
+    positionValidation: true,
+    phoneValidation: true,
+  });
+
+  // const [passwordValidation, setPasswordValidation] = useState<boolean>(true);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevValues) => ({
@@ -69,9 +88,17 @@ export default function Home() {
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted with values:", formData);
+    console.log("Form submitted with values:", formData.password);
+    const isPasswordValid = await passwordValidationSchema.isValid({
+      password: formData.password,
+    });
+    setValidationData((prevData) => ({
+      ...prevData,
+      passwordValidation: isPasswordValid,
+    }));
+
     // przekazanie formData do context? zeby byl globalny
   };
 
@@ -92,6 +119,7 @@ export default function Home() {
             type="password"
             label="Hasło"
             required
+            error={!validationData.passwordValidation}
           />
           <TextField
             sx={sxInputs}
@@ -101,6 +129,7 @@ export default function Home() {
             label="Powtórz Hasło"
             type="password"
             required
+            error={!validationData.repeatedPasswordValiadtion}
           />
           <TextField
             sx={sxInputs}
@@ -110,6 +139,7 @@ export default function Home() {
             label="NIP"
             type="number"
             required
+            error={!validationData.nipValidation}
           />
           <TextField
             sx={sxInputs}
@@ -119,6 +149,7 @@ export default function Home() {
             label="Email"
             type="email"
             required
+            error={!validationData.emailValidation}
           />
           <Autocomplete
             sx={sxInputs}
@@ -131,6 +162,7 @@ export default function Home() {
                 name="position"
                 label="Stanowisko"
                 required
+                error={!validationData.positionValidation}
               />
             )}
           />
@@ -141,11 +173,12 @@ export default function Home() {
             name="phone"
             label="Telefon"
             type="tel"
+            error={!validationData.phoneValidation}
           />
           <Button
             variant="contained"
             type="submit"
-            sx={sxSubmitButton}
+            sx={sxSubmitButtonProcess}
             style={{ textTransform: "none" }}
           >
             {registrationButtonText}

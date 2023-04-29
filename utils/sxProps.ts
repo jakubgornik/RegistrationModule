@@ -16,9 +16,21 @@ export const sxHeader = {
   borderRadius: "9px 9px 0px 0px",
 };
 
-export const sxSubmitButton = {
+export const sxSubmitButtonProcess = {
   width: "20%",
   alignSelf: "flex-end",
+  backgroundColor: "#333333",
+  borderRadius: "9px",
+  mt: 2,
+  ":hover": {
+    opacity: "80%",
+    backgroundColor: "#333333",
+    transition: "1s",
+  },
+};
+
+export const sxSubmitButtonReturn = {
+  width: "20%",
   backgroundColor: "#333333",
   borderRadius: "9px",
   mt: 2,
