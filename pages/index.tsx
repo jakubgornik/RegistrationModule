@@ -8,65 +8,18 @@ import {
   FormControl,
 } from "@mui/material";
 
+import {
+  sxContainer,
+  sxHeader,
+  sxSubmitButton,
+  sxFormTitle,
+  sxInnerBox,
+  sxInputs,
+} from "../utils/sxProps";
+
+import { headerTitle, registrationButtonText } from "../utils/textData";
+
 import { useState } from "react";
-
-const sxContainer = {
-  backgroundColor: "#F7F7F7",
-  maxWidth: { xs: "70vw", sm: "75vw", xl: "80vw" },
-  mx: "auto",
-  padding: "0 !important",
-  border: "0.5px #333333 solid",
-  borderRadius: "11px 11px 0px 0px",
-};
-
-const sxHeader = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: ["5rem", "4rem"],
-  backgroundColor: "#333333",
-  borderRadius: "9px 9px 0px 0px",
-};
-
-const sxSubmitButton = {
-  width: "20%",
-  alignSelf: "flex-end",
-  backgroundColor: "#333333",
-  borderRadius: "9px",
-  mt: 2,
-  ":hover": {
-    opacity: "80%",
-    backgroundColor: "#333333",
-    transition: "1s",
-  },
-};
-
-const sxFormTitle = {
-  maxWidth: { xs: "50vw", sm: "75vw", xl: "80vw" },
-  textAlign: "center",
-  color: "#FFFFFF",
-};
-
-const sxInnerBox = {
-  display: "flex",
-  flexDirection: "column",
-  flexWrap: "wrap",
-  maxWidth: "80%",
-  mx: "auto",
-  py: 5,
-  px: 4,
-};
-
-const sxInputs = {
-  mb: 2,
-  backdropFilter: "blur(16px)",
-  "& .MuiFilledInput-root:after": {
-    borderBottom: "2px solid #777777",
-  },
-  "& .MuiInputLabel-root.Mui-focused": {
-    color: "#777777",
-  },
-};
 
 const position: string[] = [
   "Administrator",
@@ -119,13 +72,14 @@ export default function Home() {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted with values:", formData);
+    // przekazanie formData do context? zeby byl globalny
   };
 
   return (
     <Container sx={sxContainer}>
       <Box sx={sxHeader}>
         <Typography variant="h5" component="h2" sx={sxFormTitle}>
-          Moduł rejestracji użytkownika
+          {headerTitle}
         </Typography>
       </Box>
       <Box sx={sxInnerBox}>
@@ -164,7 +118,6 @@ export default function Home() {
             name="email"
             label="Email"
             type="email"
-            autoComplete="off"
             required
           />
           <Autocomplete
@@ -195,7 +148,7 @@ export default function Home() {
             sx={sxSubmitButton}
             style={{ textTransform: "none" }}
           >
-            Dalej
+            {registrationButtonText}
           </Button>
         </FormControl>
       </Box>
