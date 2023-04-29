@@ -7,7 +7,6 @@ import {
   Container,
   FormControl,
 } from "@mui/material";
-
 import {
   sxContainer,
   sxHeader,
@@ -16,17 +15,39 @@ import {
   sxInnerBox,
   sxInputs,
 } from "../utils/sxProps";
-
 import { headerTitle, registrationButtonText } from "../utils/textData";
-
 import { useState } from "react";
-
 import * as Yup from "yup";
 
 const passwordValidationSchema = Yup.object().shape({
-  password: Yup.string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters long"),
+  password: Yup.string().required().min(8),
+});
+
+const emailValidationSchema = Yup.object().shape({
+  email: Yup.string().email().required(),
+});
+
+const nipValidationSchema = Yup.object().shape({
+  nip: Yup.string().required().min(10),
+});
+
+const positionValidationSchema = Yup.object().shape({
+  position: Yup.string()
+    .oneOf([
+      "Administrator",
+      "Dyrektor",
+      "Inspektor",
+      "Kierownik",
+      "Księgowy",
+      "Pełnomocnik",
+    ])
+    .required(),
+});
+
+const phoneValidationSchema = Yup.object().shape({
+  phone: Yup.string()
+    .matches(/^\d{9}$/)
+    .required(),
 });
 
 const position: string[] = [
@@ -66,8 +87,6 @@ export default function Home() {
     phoneValidation: true,
   });
 
-  // const [passwordValidation, setPasswordValidation] = useState<boolean>(true);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevValues) => ({
@@ -88,15 +107,41 @@ export default function Home() {
     }
   };
 
+  const validatePassword = () => {};
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted with values:", formData.password);
+
     const isPasswordValid = await passwordValidationSchema.isValid({
       password: formData.password,
     });
+    let isRepeatedPasswordValid: boolean;
+    formData.password === formData.repeatedPassword
+      ? (isRepeatedPasswordValid = true)
+      : (isRepeatedPasswordValid = false);
+
+    const isNipValid = await nipValidationSchema.isValid({
+      nip: formData.nip,
+    });
+    const isEmailValid = await emailValidationSchema.isValid({
+      email: formData.email,
+    });
+    const isPositionValid = await positionValidationSchema.isValid({
+      position: formData.position,
+    });
+    const isPhoneValid = await phoneValidationSchema.isValid({
+      phone: formData.phone,
+    });
+
     setValidationData((prevData) => ({
       ...prevData,
       passwordValidation: isPasswordValid,
+      repeatedPasswordValiadtion: isRepeatedPasswordValid,
+      nipValidation: isNipValid,
+      emailValidation: isEmailValid,
+      positionValidation: isPositionValid,
+      phoneValidation: isPhoneValid,
     }));
 
     // przekazanie formData do context? zeby byl globalny
