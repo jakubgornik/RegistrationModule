@@ -25,8 +25,7 @@ import {
   phoneValidationSchema,
 } from "../utils/validationSchemas";
 import { FormContext } from "@/store/ContextProvider";
-import Link from "next/link";
-import Test from "./components/test";
+import { useRouter } from "next/router";
 
 const position: string[] = [
   "Administrator",
@@ -148,14 +147,12 @@ export default function Home() {
     }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    // e.preventDefault();
-    // context.setFormData(formData);
-    console.log("dupa");
-  };
+  const router = useRouter();
 
-  const testowySubmit = () => {
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     context.setFormData(formData);
+    router.push("/summary");
   };
 
   return (
@@ -166,7 +163,7 @@ export default function Home() {
         </Typography>
       </Box>
       <Box sx={sxInnerBox}>
-        <FormControl onSubmit={handleFormSubmit}>
+        <FormControl component="form" onSubmit={handleFormSubmit}>
           <TextField
             sx={sxInputs}
             onChange={handleInputChange}
@@ -257,30 +254,23 @@ export default function Home() {
             }
             onBlur={validatePhone}
           />
-
-          <Link href="summary" passHref legacyBehavior>
-            <Button
-              onClick={testowySubmit}
-              // component={Link}
-              // href=""
-              variant="contained"
-              type="submit"
-              sx={sxSubmitButtonProcess}
-              style={{ textTransform: "none" }}
-              disabled={
-                !validationData.emailValidation ||
-                !validationData.phoneValidation ||
-                !validationData.nipValidation ||
-                !validationData.positionValidation ||
-                !validationData.passwordValidation ||
-                !validationData.repeatedPasswordValiadtion
-              }
-            >
-              Navigate
-            </Button>
-          </Link>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={sxSubmitButtonProcess}
+            style={{ textTransform: "none" }}
+            disabled={
+              !validationData.emailValidation ||
+              !validationData.phoneValidation ||
+              !validationData.nipValidation ||
+              !validationData.positionValidation ||
+              !validationData.passwordValidation ||
+              !validationData.repeatedPasswordValiadtion
+            }
+          >
+            {registrationButtonText}
+          </Button>
         </FormControl>
-        <Test />
       </Box>
     </Container>
   );

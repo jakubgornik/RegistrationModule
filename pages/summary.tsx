@@ -25,6 +25,7 @@ import {
 } from "../utils/textData";
 import { FormContext } from "@/store/ContextProvider";
 import { useContext } from "react";
+import { useRouter } from "next/router";
 const position: string[] = [
   "Administrator",
   "Dyrektor",
@@ -47,10 +48,18 @@ export default function Home() {
   // usecontext wartosci globalne, w index submit form bedzie je zapisywal globalnie a tutaj beda wyswietlane jako defaultvalue/value
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("hello");
+
     // fetch async wywolany definicja funkcji odzdzielnie jak response.ok false to modal z errorem
   };
 
   const context = useContext(FormContext);
+  const router = useRouter();
+
+  const navigateBack = () => {
+    console.log("wtf");
+    router.push("/");
+  };
 
   return (
     <Container sx={sxContainer}>
@@ -69,7 +78,6 @@ export default function Home() {
             label="Hasło"
             required
             value={context.formData.password}
-            // defaultValue={context.formData.password}
             InputProps={{
               readOnly: true,
             }}
@@ -140,6 +148,7 @@ export default function Home() {
           />
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Button
+              onClick={navigateBack}
               variant="contained"
               type="button"
               sx={sxSubmitButtonReturn}
