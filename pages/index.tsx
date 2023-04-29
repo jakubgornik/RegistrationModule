@@ -16,7 +16,7 @@ import {
   sxInputs,
 } from "../utils/sxProps";
 import { headerTitle, registrationButtonText } from "../utils/textData";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   passwordValidationSchema,
   emailValidationSchema,
@@ -24,6 +24,9 @@ import {
   positionValidationSchema,
   phoneValidationSchema,
 } from "../utils/validationSchemas";
+import { FormContext } from "@/store/ContextProvider";
+import Link from "next/link";
+import Test from "./components/test";
 
 const position: string[] = [
   "Administrator",
@@ -52,6 +55,8 @@ export default function Home() {
     position: "",
     phone: "",
   });
+
+  const context = useContext(FormContext);
 
   const [validationData, setValidationData] = useState({
     passwordValidation: true,
@@ -143,11 +148,14 @@ export default function Home() {
     }));
   };
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted with values:", formData);
+  const handleFormSubmit = (e: React.FormEvent) => {
+    // e.preventDefault();
+    // context.setFormData(formData);
+    console.log("dupa");
+  };
 
-    // przekazanie formData do context? zeby byl globalny
+  const testowySubmit = () => {
+    context.setFormData(formData);
   };
 
   return (
@@ -158,7 +166,7 @@ export default function Home() {
         </Typography>
       </Box>
       <Box sx={sxInnerBox}>
-        <FormControl component="form" onSubmit={handleFormSubmit}>
+        <FormControl onSubmit={handleFormSubmit}>
           <TextField
             sx={sxInputs}
             onChange={handleInputChange}
@@ -249,15 +257,30 @@ export default function Home() {
             }
             onBlur={validatePhone}
           />
-          <Button
-            variant="contained"
-            type="submit"
-            sx={sxSubmitButtonProcess}
-            style={{ textTransform: "none" }}
-          >
-            {registrationButtonText}
-          </Button>
+
+          <Link href="summary" passHref legacyBehavior>
+            <Button
+              onClick={testowySubmit}
+              // component={Link}
+              // href=""
+              variant="contained"
+              type="submit"
+              sx={sxSubmitButtonProcess}
+              style={{ textTransform: "none" }}
+              disabled={
+                !validationData.emailValidation ||
+                !validationData.phoneValidation ||
+                !validationData.nipValidation ||
+                !validationData.positionValidation ||
+                !validationData.passwordValidation ||
+                !validationData.repeatedPasswordValiadtion
+              }
+            >
+              Navigate
+            </Button>
+          </Link>
         </FormControl>
+        <Test />
       </Box>
     </Container>
   );

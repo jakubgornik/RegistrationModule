@@ -23,7 +23,8 @@ import {
   registrationSummaryButtonTextProcess,
   registrationSummaryButtonTextReturn,
 } from "../utils/textData";
-
+import { FormContext } from "@/store/ContextProvider";
+import { useContext } from "react";
 const position: string[] = [
   "Administrator",
   "Dyrektor",
@@ -43,10 +44,13 @@ interface FormValues {
 }
 
 export default function Home() {
+  // usecontext wartosci globalne, w index submit form bedzie je zapisywal globalnie a tutaj beda wyswietlane jako defaultvalue/value
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // fetch async wywolany definicja funkcji odzdzielnie jak response.ok false to modal z errorem
   };
+
+  const context = useContext(FormContext);
 
   return (
     <Container sx={sxContainer}>
@@ -64,6 +68,8 @@ export default function Home() {
             type="password"
             label="Hasło"
             required
+            value={context.formData.password}
+            // defaultValue={context.formData.password}
             InputProps={{
               readOnly: true,
             }}
@@ -75,6 +81,7 @@ export default function Home() {
             label="Powtórz Hasło"
             type="password"
             required
+            value={context.formData.repeatedPassword}
             InputProps={{
               readOnly: true,
             }}
@@ -86,6 +93,7 @@ export default function Home() {
             label="NIP"
             type="number"
             required
+            value={context.formData.nip}
             InputProps={{
               readOnly: true,
             }}
@@ -97,6 +105,7 @@ export default function Home() {
             label="Email"
             type="email"
             required
+            value={context.formData.email}
             InputProps={{
               readOnly: true,
             }}
@@ -104,6 +113,7 @@ export default function Home() {
           <Autocomplete
             sx={sxInputs}
             options={position}
+            value={context.formData.position}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -123,6 +133,7 @@ export default function Home() {
             name="phone"
             label="Telefon"
             type="tel"
+            value={context.formData.phone}
             InputProps={{
               readOnly: true,
             }}
