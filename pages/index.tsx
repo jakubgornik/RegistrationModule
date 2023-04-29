@@ -17,38 +17,13 @@ import {
 } from "../utils/sxProps";
 import { headerTitle, registrationButtonText } from "../utils/textData";
 import { useState } from "react";
-import * as Yup from "yup";
-
-const passwordValidationSchema = Yup.object().shape({
-  password: Yup.string().required().min(8),
-});
-
-const emailValidationSchema = Yup.object().shape({
-  email: Yup.string().email().required(),
-});
-
-const nipValidationSchema = Yup.object().shape({
-  nip: Yup.string().required().min(10),
-});
-
-const positionValidationSchema = Yup.object().shape({
-  position: Yup.string()
-    .oneOf([
-      "Administrator",
-      "Dyrektor",
-      "Inspektor",
-      "Kierownik",
-      "Księgowy",
-      "Pełnomocnik",
-    ])
-    .required(),
-});
-
-const phoneValidationSchema = Yup.object().shape({
-  phone: Yup.string()
-    .matches(/^\d{9}$/)
-    .required(),
-});
+import {
+  passwordValidationSchema,
+  emailValidationSchema,
+  nipValidationSchema,
+  positionValidationSchema,
+  phoneValidationSchema,
+} from "../utils/validationSchemas";
 
 const position: string[] = [
   "Administrator",
