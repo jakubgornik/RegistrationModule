@@ -23,29 +23,12 @@ import {
   positionValidationSchema,
   phoneValidationSchema,
 } from "../utils/validationSchemas";
+import { FormValues } from "@/utils/interfaces";
+import { position } from "@/utils/basicData";
 
 import { useState, useContext } from "react";
 import { FormContext } from "@/store/ContextProvider";
 import { useRouter } from "next/router";
-
-const position: string[] = [
-  "Administrator",
-  "Dyrektor",
-  "Inspektor",
-  "Kierownik",
-  "Księgowy",
-  "Pełnomocnik",
-  "",
-];
-
-interface FormValues {
-  password: string;
-  repeatedPassword: string;
-  nip: number;
-  email: string;
-  position: string;
-  phone: string;
-}
 
 export default function FormModule() {
   const context = useContext(FormContext);
@@ -263,7 +246,6 @@ export default function FormModule() {
             variant="contained"
             type="submit"
             sx={sxSubmitButtonProceed}
-            style={{ textTransform: "none" }}
             disabled={
               !validationData.emailValidation ||
               !validationData.nipValidation ||

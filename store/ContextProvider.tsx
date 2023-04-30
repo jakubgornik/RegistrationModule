@@ -1,27 +1,10 @@
-import { createContext, useState, ReactNode } from "react";
-
-interface Props {
-  children: ReactNode;
-}
-
-interface FormValues {
-  password: string;
-  repeatedPassword: string;
-  nip: number;
-  email: string;
-  position: string;
-  phone: string;
-}
-
-interface FormContextProps {
-  formData: FormValues;
-  setFormData: React.Dispatch<React.SetStateAction<FormValues>>;
-}
+import { createContext, useState } from "react";
+import { Props, FormValues, FormContextProps } from "@/utils/interfaces";
 
 const initialFormValues: FormValues = {
   password: "",
   repeatedPassword: "",
-  nip: 0,
+  nip: null,
   email: "",
   position: "",
   phone: "",

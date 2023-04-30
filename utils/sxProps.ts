@@ -55,6 +55,7 @@ export const sxSubmitButtonProceed = {
     backgroundColor: "#333333",
     transition: "1s",
   },
+  textTransform: "none",
 };
 
 export const sxSubmitButtonReturn = {
@@ -67,4 +68,11 @@ export const sxSubmitButtonReturn = {
     backgroundColor: "#333333",
     transition: "1s",
   },
+  textTransform: "none",
+};
+
+export const sxSummaryButtonsBox = {
+  display: "flex",
+  flexDirection: { xs: "column", sm: "row" },
+  justifyContent: "space-between",
 };

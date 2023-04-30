@@ -21,6 +21,7 @@ import {
   sxFormTitle,
   sxInnerBox,
   sxInputs,
+  sxSummaryButtonsBox,
 } from "../utils/sxProps";
 
 import {
@@ -32,35 +33,16 @@ import {
   modalErrorDescription,
   modalErrorStatusDescription,
 } from "../utils/textData";
+import { position } from "@/utils/basicData";
 
 import { Transition } from "@/components/transition";
-
 import { FormContext } from "@/store/ContextProvider";
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 
-const position: string[] = [
-  "Administrator",
-  "Dyrektor",
-  "Inspektor",
-  "Kierownik",
-  "Księgowy",
-  "Pełnomocnik",
-  "",
-];
-
-interface FormValues {
-  password: string;
-  repeatedPassword: string;
-  nip: number;
-  email: string;
-  position: string;
-  phone: string;
-}
-
 export default function Summary() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [errorStatus, setErrorStatus] = useState(0);
+  const [errorStatus, setErrorStatus] = useState<number | null>(null);
   const context = useContext(FormContext);
   const router = useRouter();
 
@@ -74,8 +56,6 @@ export default function Summary() {
     });
     if (!response.ok) {
       setErrorStatus(response.status);
-      console.log("Error submitting data:", response.status);
-      console.log("Data submitted with error!");
     }
   };
 
@@ -178,19 +158,12 @@ export default function Summary() {
               readOnly: true,
             }}
           />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
-              justifyContent: "space-between",
-            }}
-          >
+          <Box sx={sxSummaryButtonsBox}>
             <Button
               onClick={navigateBack}
               variant="contained"
               type="button"
               sx={sxSubmitButtonReturn}
-              style={{ textTransform: "none" }}
             >
               {registrationSummaryButtonTextReturn}
             </Button>
@@ -198,7 +171,6 @@ export default function Summary() {
               variant="contained"
               type="submit"
               sx={sxSubmitButtonProceed}
-              style={{ textTransform: "none" }}
             >
               {registrationSummaryButtonTextProcess}
             </Button>
