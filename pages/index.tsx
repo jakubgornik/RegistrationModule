@@ -16,7 +16,6 @@ import {
   sxInputs,
 } from "../utils/sxProps";
 import { headerTitle, registrationButtonText } from "../utils/textData";
-import { useState, useContext } from "react";
 import {
   passwordValidationSchema,
   emailValidationSchema,
@@ -24,6 +23,7 @@ import {
   positionValidationSchema,
   phoneValidationSchema,
 } from "../utils/validationSchemas";
+import { useState, useContext } from "react";
 import { FormContext } from "@/store/ContextProvider";
 import { useRouter } from "next/router";
 
@@ -34,6 +34,7 @@ const position: string[] = [
   "Kierownik",
   "Księgowy",
   "Pełnomocnik",
+  "",
 ];
 
 interface FormValues {
@@ -45,17 +46,17 @@ interface FormValues {
   phone: string;
 }
 
-export default function Home() {
-  const [formData, setFormData] = useState<FormValues>({
-    password: "",
-    repeatedPassword: "",
-    nip: 0,
-    email: "",
-    position: "",
-    phone: "",
-  });
-
+export default function FormModule() {
   const context = useContext(FormContext);
+  const router = useRouter();
+  const [formData, setFormData] = useState<FormValues>({
+    password: context.formData.password,
+    repeatedPassword: context.formData.repeatedPassword,
+    nip: context.formData.nip,
+    email: context.formData.email,
+    position: context.formData.position,
+    phone: context.formData.phone,
+  });
 
   const [validationData, setValidationData] = useState({
     passwordValidation: true,
@@ -86,7 +87,7 @@ export default function Home() {
     }
   };
 
-  const validatePassword = async () => {
+  const handlePasswordValidation = async () => {
     const isPasswordValid = await passwordValidationSchema.isValid({
       password: formData.password,
     });
@@ -96,7 +97,7 @@ export default function Home() {
     }));
   };
 
-  const validateRepeatedPassword = async () => {
+  const handleRepeatedPasswordValidation = async () => {
     let isRepeatedPasswordValid: boolean;
     formData.password === formData.repeatedPassword
       ? (isRepeatedPasswordValid = true)
@@ -107,7 +108,7 @@ export default function Home() {
     }));
   };
 
-  const validateEmail = async () => {
+  const handleEmailValidation = async () => {
     const isEmailValid = await emailValidationSchema.isValid({
       email: formData.email,
     });
@@ -117,7 +118,7 @@ export default function Home() {
     }));
   };
 
-  const validateNip = async () => {
+  const handleNipValidation = async () => {
     const isNipValid = await nipValidationSchema.isValid({
       nip: formData.nip,
     });
@@ -127,7 +128,7 @@ export default function Home() {
     }));
   };
 
-  const validatePosition = async () => {
+  const handlePositionValidation = async () => {
     const isPositionValid = await positionValidationSchema.isValid({
       position: formData.position,
     });
@@ -137,7 +138,7 @@ export default function Home() {
     }));
   };
 
-  const validatePhone = async () => {
+  const handlePhoneValidation = async () => {
     const isPhoneValid = await phoneValidationSchema.isValid({
       phone: formData.phone,
     });
@@ -146,8 +147,6 @@ export default function Home() {
       phoneValidation: isPhoneValid,
     }));
   };
-
-  const router = useRouter();
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -172,11 +171,12 @@ export default function Home() {
             type="password"
             label="Hasło"
             required
+            defaultValue={context.formData.password}
             error={!validationData.passwordValidation}
             helperText={
               !validationData.passwordValidation ? "Nieprawidłowe dane" : ""
             }
-            onBlur={validatePassword}
+            onBlur={handlePasswordValidation}
           />
           <TextField
             sx={sxInputs}
@@ -186,13 +186,14 @@ export default function Home() {
             label="Powtórz Hasło"
             type="password"
             required
+            defaultValue={context.formData.repeatedPassword}
             error={!validationData.repeatedPasswordValiadtion}
             helperText={
               !validationData.repeatedPasswordValiadtion
                 ? "Nieprawidłowe dane"
                 : ""
             }
-            onBlur={validateRepeatedPassword}
+            onBlur={handleRepeatedPasswordValidation}
           />
           <TextField
             sx={sxInputs}
@@ -202,11 +203,12 @@ export default function Home() {
             label="NIP"
             type="number"
             required
+            defaultValue={context.formData.nip}
             error={!validationData.nipValidation}
             helperText={
               !validationData.nipValidation ? "Nieprawidłowe dane" : ""
             }
-            onBlur={validateNip}
+            onBlur={handleNipValidation}
           />
           <TextField
             sx={sxInputs}
@@ -216,15 +218,16 @@ export default function Home() {
             label="Email"
             type="email"
             required
+            defaultValue={context.formData.email}
             error={!validationData.emailValidation}
             helperText={
               !validationData.emailValidation ? "Nieprawidłowe dane" : ""
             }
-            onBlur={validateEmail}
+            onBlur={handleEmailValidation}
           />
           <Autocomplete
             sx={sxInputs}
-            options={position}
+            options={position || []}
             onChange={handleAutocomplete}
             renderInput={(params) => (
               <TextField
@@ -237,7 +240,7 @@ export default function Home() {
                 helperText={
                   !validationData.positionValidation ? "Nieprawidłowe dane" : ""
                 }
-                onBlur={validatePosition}
+                onBlur={handlePositionValidation}
               />
             )}
           />
@@ -248,11 +251,12 @@ export default function Home() {
             name="phone"
             label="Telefon"
             type="tel"
+            defaultValue={context.formData.phone}
             error={!validationData.phoneValidation}
             helperText={
               !validationData.phoneValidation ? "Nieprawidłowe dane" : ""
             }
-            onBlur={validatePhone}
+            onBlur={handlePhoneValidation}
           />
           <Button
             variant="contained"
@@ -261,7 +265,6 @@ export default function Home() {
             style={{ textTransform: "none" }}
             disabled={
               !validationData.emailValidation ||
-              !validationData.phoneValidation ||
               !validationData.nipValidation ||
               !validationData.positionValidation ||
               !validationData.passwordValidation ||

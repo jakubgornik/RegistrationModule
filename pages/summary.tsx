@@ -33,6 +33,7 @@ const position: string[] = [
   "Kierownik",
   "Księgowy",
   "Pełnomocnik",
+  "",
 ];
 
 interface FormValues {
@@ -45,19 +46,16 @@ interface FormValues {
 }
 
 export default function Home() {
-  // usecontext wartosci globalne, w index submit form bedzie je zapisywal globalnie a tutaj beda wyswietlane jako defaultvalue/value
+  const context = useContext(FormContext);
+  const router = useRouter();
+
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("hello");
 
     // fetch async wywolany definicja funkcji odzdzielnie jak response.ok false to modal z errorem
   };
 
-  const context = useContext(FormContext);
-  const router = useRouter();
-
   const navigateBack = () => {
-    console.log("wtf");
     router.push("/");
   };
 
