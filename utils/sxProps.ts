@@ -1,6 +1,6 @@
 export const sxContainer = {
   backgroundColor: "#F7F7F7",
-  maxWidth: { xs: "70vw", sm: "75vw", xl: "80vw" },
+  maxWidth: { xs: "60vw", sm: "65vw", xl: "70vw" },
   mx: "auto",
   padding: "0 !important",
   border: "0.5px #333333 solid",
@@ -11,38 +11,14 @@ export const sxHeader = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: ["5rem", "4rem"],
+  height: ["5.5rem", "4rem"],
   backgroundColor: "#333333",
   borderRadius: "9px 9px 0px 0px",
-};
-
-export const sxSubmitButtonProcess = {
-  width: "20%",
-  alignSelf: "flex-end",
-  backgroundColor: "#333333",
-  borderRadius: "9px",
-  mt: 2,
-  ":hover": {
-    opacity: "80%",
-    backgroundColor: "#333333",
-    transition: "1s",
-  },
-};
-
-export const sxSubmitButtonReturn = {
-  width: "20%",
-  backgroundColor: "#333333",
-  borderRadius: "9px",
-  mt: 2,
-  ":hover": {
-    opacity: "80%",
-    backgroundColor: "#333333",
-    transition: "1s",
-  },
+  py: 1,
 };
 
 export const sxFormTitle = {
-  maxWidth: { xs: "50vw", sm: "75vw", xl: "80vw" },
+  maxWidth: { xs: "50vw", sm: "70vw", xl: "80vw" },
   textAlign: "center",
   color: "#FFFFFF",
 };
@@ -54,7 +30,7 @@ export const sxInnerBox = {
   maxWidth: "80%",
   mx: "auto",
   py: 5,
-  px: 4,
+  px: 2.5,
 };
 
 export const sxInputs = {
@@ -65,5 +41,30 @@ export const sxInputs = {
   },
   "& .MuiInputLabel-root.Mui-focused": {
     color: "#777777",
+  },
+};
+
+export const sxSubmitButtonProceed = {
+  width: { xs: "100%", sm: "25%" },
+  alignSelf: { xs: "flex-start", sm: "flex-end" },
+  backgroundColor: "#333333",
+  borderRadius: "9px",
+  mt: 2,
+  ":hover": {
+    opacity: "80%",
+    backgroundColor: "#333333",
+    transition: "1s",
+  },
+};
+
+export const sxSubmitButtonReturn = {
+  width: { xs: "100%", sm: "20%" },
+  backgroundColor: "#333333",
+  borderRadius: "9px",
+  mt: 2,
+  ":hover": {
+    opacity: "80%",
+    backgroundColor: "#333333",
+    transition: "1s",
   },
 };

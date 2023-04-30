@@ -15,7 +15,7 @@ export const emailValidationSchema = Yup.object().shape({
 });
 
 export const nipValidationSchema = Yup.object().shape({
-  nip: Yup.string().required().min(10),
+  nip: Yup.string().required().min(10).max(10),
 });
 
 export const positionValidationSchema = Yup.object().shape({

@@ -10,7 +10,7 @@ import {
 import {
   sxContainer,
   sxHeader,
-  sxSubmitButtonProcess,
+  sxSubmitButtonProceed,
   sxFormTitle,
   sxInnerBox,
   sxInputs,
@@ -23,6 +23,7 @@ import {
   positionValidationSchema,
   phoneValidationSchema,
 } from "../utils/validationSchemas";
+
 import { useState, useContext } from "react";
 import { FormContext } from "@/store/ContextProvider";
 import { useRouter } from "next/router";
@@ -148,7 +149,7 @@ export default function FormModule() {
     }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     context.setFormData(formData);
     router.push("/summary");
@@ -261,7 +262,7 @@ export default function FormModule() {
           <Button
             variant="contained"
             type="submit"
-            sx={sxSubmitButtonProcess}
+            sx={sxSubmitButtonProceed}
             style={{ textTransform: "none" }}
             disabled={
               !validationData.emailValidation ||

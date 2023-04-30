@@ -27,7 +27,6 @@ const initialFormValues: FormValues = {
   phone: "",
 };
 
-// Init
 export const FormContext = createContext<FormContextProps>({
   formData: initialFormValues,
   setFormData: () => {},

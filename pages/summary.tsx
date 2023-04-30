@@ -6,12 +6,17 @@ import {
   Autocomplete,
   Container,
   FormControl,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 
 import {
   sxContainer,
   sxHeader,
-  sxSubmitButtonProcess,
+  sxSubmitButtonProceed,
   sxSubmitButtonReturn,
   sxFormTitle,
   sxInnerBox,
@@ -22,10 +27,18 @@ import {
   summaryHeaderTitle,
   registrationSummaryButtonTextProcess,
   registrationSummaryButtonTextReturn,
+  registrationButtonText,
+  modalErrorTitle,
+  modalErrorDescription,
+  modalErrorStatusDescription,
 } from "../utils/textData";
+
+import { Transition } from "@/components/transition";
+
 import { FormContext } from "@/store/ContextProvider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
+
 const position: string[] = [
   "Administrator",
   "Dyrektor",
@@ -45,18 +58,39 @@ interface FormValues {
   phone: string;
 }
 
-export default function Home() {
+export default function Summary() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [errorStatus, setErrorStatus] = useState(0);
   const context = useContext(FormContext);
   const router = useRouter();
 
+  const postData = async () => {
+    const response = await fetch("someUrl-simulateApiNotAvailable", {
+      method: "POST",
+      body: JSON.stringify(context.formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      setErrorStatus(response.status);
+      console.log("Error submitting data:", response.status);
+      console.log("Data submitted with error!");
+    }
+  };
+
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // fetch async wywolany definicja funkcji odzdzielnie jak response.ok false to modal z errorem
+    setIsModalVisible(!isModalVisible);
+    postData();
   };
 
   const navigateBack = () => {
     router.push("/");
+  };
+
+  const handleModal = () => {
+    setIsModalVisible(!isModalVisible);
   };
 
   return (
@@ -144,7 +178,13 @@ export default function Home() {
               readOnly: true,
             }}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              justifyContent: "space-between",
+            }}
+          >
             <Button
               onClick={navigateBack}
               variant="contained"
@@ -157,12 +197,35 @@ export default function Home() {
             <Button
               variant="contained"
               type="submit"
-              sx={sxSubmitButtonProcess}
+              sx={sxSubmitButtonProceed}
               style={{ textTransform: "none" }}
             >
               {registrationSummaryButtonTextProcess}
             </Button>
           </Box>
+          <Dialog
+            open={isModalVisible}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleModal}
+          >
+            <DialogTitle>{modalErrorTitle}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>{modalErrorDescription}</DialogContentText>
+              <DialogContentText>
+                {modalErrorStatusDescription} {errorStatus}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                sx={sxSubmitButtonProceed}
+                onClick={handleModal}
+              >
+                {registrationButtonText}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </FormControl>
       </Box>
     </Container>
